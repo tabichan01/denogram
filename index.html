@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" />
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/templatemo-style.css" />
+    <title>Tree Diagram</title>
+    
+  </head>
+  <body>
+  
+    <!-- Information of Probability! -->
+    <section id="tmPortfolio">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+		    <h1><strong>Probability</strong></h1>
+			<br />
+			
+            <div class="tm-portfolio-item">
+              <div class="tm-portfolio-name text-white tm-bg-green">
+                About Probability 
+              </div>
+              <div class="tm-portfolio-description">
+                <h3 class="tm-text-green">
+                  Introduction
+                </h3>
+                <p class="mb-0">
+                 In our daily life, we use words such as 'impossible', 'unlikely' and 'certainly' to
+				 describe the chance of a phenomenon or result happening. 
+				 
+                </p>
+              </div>
+            </div>
+
+            <div class="tm-portfolio-item">
+              <div class="tm-portfolio-name text-white tm-bg-orange">
+                Terms and Definition
+              </div>
+              <div class="tm-portfolio-description">
+                <h3 class="tm-text-orange">
+                  In Probability...
+                </h3>
+                <p class="mb-0">
+                  A random experiment is a process in which the result of the process cannot be predicted with certainity.
+				  The result is called an outcome of the experiment.
+				  An experiment is likely to have more than one possible outcome.
+                </p>
+              </div>
+            </div>
+
+            <div class="tm-portfolio-item">
+              <div class="tm-portfolio-name text-white tm-bg-blue">
+               Examples
+              </div>
+              <div class="tm-portfolio-description">
+                <h3 class="tm-text-blue">
+                  From Daily Life
+                </h3>
+                <p class="mb-0">
+                  Tossing a coin - head, tail <br />
+				  Rolling a die - 1,2,3,4,5,6 <br />
+				  Drawing a ball at random from a bag containing red and white balls - red ball, white ball
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Probability Information -->
+	
+	<!-- Question -->
+    <section id="tmWelcome" class="parallax-window" data-parallax="scroll" data-image-src="img/mini-profile-bg-01.png">
+      <div class="container-fluid tm-brand-container-outer">
+        <div class="row">
+          <div class="col-12">
+            <!-- Logo Area -->
+            <!-- Black transparent bg -->
+            
+              
+                <h2 class="tm-welcome-title"><strong>Try it Out!</strong></h2>
+                <p class="pb-0">
+                  An airplane manufacturer has three factories A, B and C which produce 50%, 25%, and 25%, respectively, of a particular airplane. 
+				  Seventy percent of the airplanes produced in factory A are passenger (P) airplanes, 25% of those produced in factory B are passenger airplanes, and 25% of the airplanes produced in factory C 
+				  are passenger airplanes. <br />
+				  If an airplane produced by the manufacturer is selected at random and with the probability tree given below, calculate the probability the airplane will be a passenger plane.
+				<i>(Click on each node to expand information)<i></p>
+				  
+             
+            
+          </div>
+        </div>
+      </div>
+				<style>
+				
+				.node {
+					cursor: pointer;
+				}
+
+				.node circle {
+				  fill: #fff;
+				  stroke: steelblue;
+				  stroke-width: 3px;
+				}
+
+				.node text {
+				  font: 12px sans-serif;
+				}
+
+				.link {
+				  fill: none;
+				  stroke: #ccc;
+				  stroke-width: 2px;
+				}
+				
+				svg{
+				position: relative;
+				left: 400px;
+				bottom: 650px;
+				}
+				</style>
+
+  </head>
+
+  <body>
+
+			<!-- load the d3.js library -->	
+			<script src="https://d3js.org/d3.v3.min.js"></script>
+				
+			<script>
+
+			var treeData = [
+			  {
+				"name": "Factories",
+				"parent": "null",
+				"children": [
+				  {
+					"name": "Factory A: 0.5",
+					"parent": "Factories",
+					"children": [
+					  {
+						"name": "0.7 P",
+						"parent": "Factory A"
+					  },
+					  {
+						"name": "0.3 NP",
+						"parent": "Factory A"
+					  }
+					]
+				  },
+				  {
+					"name": "Factory B: 0.25",
+					"parent": "Factories",
+					"children": [
+						{
+						"name": "0.25 P",
+						"parent": "Factory B"
+					  },
+					  {
+						"name": "0.75 NP",
+						"parent": "Factory B"
+					  }
+					
+					]
+				  },
+				  {
+					"name": "Factory C: 0.25",
+					"parent": "Factories",
+					"children": [
+						{
+						"name": "0.25 P",
+						"parent": "Factory C"
+					  },
+					  {
+						"name": "0.75 NP",
+						"parent": "Factory C"
+					  }
+					
+					]
+				  }
+				]
+			  }
+			];
+
+
+			// ************** Generate the tree diagram	 *****************
+			var margin = {top: 20, right: 120, bottom: 20, left: 120},
+				width = 960 - margin.right - margin.left,
+				height = 500 - margin.top - margin.bottom;
+				
+			var i = 0,
+				duration = 750,
+				root;
+
+			var tree = d3.layout.tree()
+				.size([height, width]);
+
+			var diagonal = d3.svg.diagonal()
+				.projection(function(d) { return [d.y, d.x]; });
+
+			var svg = d3.select("body").append("svg")
+				.attr("width", width + margin.right + margin.left)
+				.attr("height", height + margin.top + margin.bottom)
+			  .append("g")
+				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+			root = treeData[0];
+			root.x0 = height / 2;
+			root.y0 = 0;
+			  
+			update(root);
+
+			d3.select(self.frameElement).style("height", "500px");
+
+			function update(source) {
+
+			  // Compute the new tree layout.
+			  var nodes = tree.nodes(root).reverse(),
+				  links = tree.links(nodes);
+
+			  // Normalize for fixed-depth.
+			  nodes.forEach(function(d) { d.y = d.depth * 180; });
+
+			  // Update the nodes…
+			  var node = svg.selectAll("g.node")
+				  .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+			  // Enter any new nodes at the parent's previous position.
+			  var nodeEnter = node.enter().append("g")
+				  .attr("class", "node")
+				  .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+				  .on("click", click);
+
+			  nodeEnter.append("circle")
+				  .attr("r", 1e-6)
+				  .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+			  nodeEnter.append("text")
+				  .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
+				  .attr("dy", ".35em")
+				  .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+				  .text(function(d) { return d.name; })
+				  .style("fill-opacity", 1e-6);
+
+			  // Transition nodes to their new position.
+			  var nodeUpdate = node.transition()
+				  .duration(duration)
+				  .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+			  nodeUpdate.select("circle")
+				  .attr("r", 10)
+				  .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+			  nodeUpdate.select("text")
+				  .style("fill-opacity", 1);
+
+			  // Transition exiting nodes to the parent's new position.
+			  var nodeExit = node.exit().transition()
+				  .duration(duration)
+				  .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+				  .remove();
+
+			  nodeExit.select("circle")
+				  .attr("r", 1e-6);
+
+			  nodeExit.select("text")
+				  .style("fill-opacity", 1e-6);
+
+			  // Update the links…
+			  var link = svg.selectAll("path.link")
+				  .data(links, function(d) { return d.target.id; });
+
+			  // Enter any new links at the parent's previous position.
+			  link.enter().insert("path", "g")
+				  .attr("class", "link")
+				  .attr("d", function(d) {
+					var o = {x: source.x0, y: source.y0};
+					return diagonal({source: o, target: o});
+				  });
+
+			  // Transition links to their new position.
+			  link.transition()
+				  .duration(duration)
+				  .attr("d", diagonal);
+
+			  // Transition exiting nodes to the parent's new position.
+			  link.exit().transition()
+				  .duration(duration)
+				  .attr("d", function(d) {
+					var o = {x: source.x, y: source.y};
+					return diagonal({source: o, target: o});
+				  })
+				  .remove();
+
+			  // Stash the old positions for transition.
+			  nodes.forEach(function(d) {
+				d.x0 = d.x;
+				d.y0 = d.y;
+			  });
+			}
+
+			// Toggle children on click.
+			function click(d) {
+			  if (d.children) {
+				d._children = d.children;
+				d.children = null;
+			  } else {
+				d.children = d._children;
+				d._children = null;
+			  }
+			  update(d);
+			}
+
+			</script>
+				</section>
+				<!-- End Welcome section -->
+
+				<!-- section -->
+				<script src="js/jquery.min.js"></script>
+				<script src="js/parallax.min.js"></script>
+				<script>
+				  function detectMsBrowser() {
+					using_ms_browser =
+					  navigator.appName == "Microsoft Internet Explorer" ||
+					  (navigator.appName == "Netscape" &&
+						navigator.appVersion.indexOf("Edge") > -1) ||
+					  (navigator.appName == "Netscape" &&
+						navigator.appVersion.indexOf("Trident") > -1);
+
+					if (using_ms_browser == true) {
+					  alert(
+						"Please use Chrome or Firefox for the best browsing experience!"
+					  );
+					}
+				  }
+				  function setBrandMarginTop() {
+					var bottomContainerHeight = $(".tm-welcome-container").height();
+
+					$(".tm-brand-container-outer").css({
+					  "margin-top": -bottomContainerHeight + "px"
+					});
+				  }
+
+				  $(function() {
+					setBrandMarginTop();
+					detectMsBrowser();
+
+					// Handle window resize event
+					$(window).resize(function() {
+					  setBrandMarginTop();
+					});
+				  });
+				</script>
+  </body>
+</html>
